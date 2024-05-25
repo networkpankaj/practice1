@@ -2,17 +2,23 @@ package main
 
 import (
 	"fmt"
+	"net/http"
 )
+
+func handler(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintf(w, "Hello World, %s!", r.URL.Path[1:])
+}
 
 func main() {
 
-	var price int = 100
-	fmt.Println("Price is", price, "dollars")
+	http.HandleFunc("/", handler)
+	http.ListenAndServe(":8080", nil)
 
-	var taxRate float64 = 0.08
-	var tax float64 = taxRate * float64(price)
+	firstName, _ := getNames()
+	fmt.Println("Welcome to Textio,", firstName)
 
-	fmt.Println("Tax is", tax, "dollars")
-	var total float64 = float64(price) + tax
-	fmt.Println("Total cost is", total, "dollars")
+}
+
+func getNames() (string, string) {
+	return "John", "Doe"
 }
